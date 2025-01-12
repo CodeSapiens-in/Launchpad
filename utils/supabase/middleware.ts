@@ -1,62 +1,66 @@
-import { createServerClient } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
 
-export const updateSession = async (request: NextRequest) => {
-  // This `try/catch` block is only here for the interactive tutorial.
-  // Feel free to remove once you have Supabase connected.
-  try {
-    // Create an unmodified response
-    let response = NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
+export async function updateSession(request: NextRequest) {
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
 
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return request.cookies.getAll();
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value),
-            );
-            response = NextResponse.next({
-              request,
-            });
-            cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options),
-            );
-          },
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          });
+        },
+        remove(name: string, options: CookieOptions) {
+          response.cookies.set({
+            name,
+            value: "",
+            ...options,
+          });
         },
       },
-    );
-
-    // This will refresh session if expired - required for Server Components
-    // https://supabase.com/docs/guides/auth/server-side/nextjs
-    const user = await supabase.auth.getUser();
-
-    // protected routes
-    if (request.nextUrl.pathname.startsWith("/protected") && user.error) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
     }
+  );
 
-    if (request.nextUrl.pathname === "/" && !user.error) {
-      return NextResponse.redirect(new URL("/protected", request.url));
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (user) {
+    // Get user's current stage
+    const { data: profile } = await supabase
+      .from("user_profiles")
+      .select("stage")
+      .eq("user_id", user.id)
+      .single();
+
+    const stage = profile?.stage ?? -2; // Default to skill selection if no stage
+
+    // Handle stage-based routing
+    if (request.nextUrl.pathname === "/") {
+      if (stage === -2) {
+        return NextResponse.redirect(new URL("/skill-selection", request.url));
+      } else if (stage === -1) {
+        return NextResponse.redirect(new URL("/evaluation", request.url));
+      } else {
+        return NextResponse.redirect(new URL("/learn", request.url));
+      }
     }
-
-    return response;
-  } catch (e) {
-    // If you are here, a Supabase client could not be created!
-    // This is likely because you have not set up environment variables.
-    // Check out http://localhost:3000 for Next Steps.
-    return NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
+  } else if (request.nextUrl.pathname !== "/" && 
+             request.nextUrl.pathname !== "/sign-in" && 
+             !request.nextUrl.pathname.startsWith("/auth")) {
+    return NextResponse.redirect(new URL("/sign-in", request.url));
   }
-};
+
+  return response;
+}

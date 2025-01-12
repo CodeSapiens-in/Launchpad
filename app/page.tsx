@@ -1,16 +1,24 @@
-import Hero from "@/components/hero";
-import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
-import SignUpUserSteps from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+import { Button } from "@/components/ui/button";
+import { FaGithub } from "react-icons/fa";
+import { signInWithGithubAction } from "./actions";
 
-export default async function Home() {
+export default function Home() {
   return (
-    <>
-      <Hero />
-      <main className="flex-1 flex flex-col gap-6 px-4">
-        <h2 className="font-medium text-xl mb-4">Next steps</h2>
-        {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-      </main>
-    </>
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold mb-2">Welcome to CodeSapiens</h1>
+        <p className="text-muted-foreground">Sign in to continue</p>
+      </div>
+      <form action={signInWithGithubAction}>
+        <Button
+          size="lg"
+          variant="outline"
+          className="flex items-center gap-2 px-8 py-6 text-lg"
+        >
+          <FaGithub className="w-6 h-6" />
+          Sign in with GitHub
+        </Button>
+      </form>
+    </div>
   );
 }

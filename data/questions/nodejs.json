@@ -1,0 +1,36 @@
+{
+  "skillName": "Node.js",
+  "level": "beginner",
+  "questions": [
+    {
+      "id": 1,
+      "category": "Core",
+      "question": "What is Node.js?",
+      "answer": "Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside a web browser. It allows developers to use JavaScript to write command line tools and server-side scripts."
+    },
+    {
+      "id": 2,
+      "category": "Core",
+      "question": "What is the event loop in Node.js?",
+      "answer": "The event loop is what allows Node.js to perform non-blocking I/O operations despite JavaScript being single-threaded. It handles the execution of multiple chunks of your program over time, each time running a piece of your code and then moving on to run another piece."
+    },
+    {
+      "id": 3,
+      "category": "Core",
+      "question": "What is npm?",
+      "answer": "npm (Node Package Manager) is the default package manager for Node.js. It allows developers to install, share, and manage dependencies in their Node.js projects."
+    },
+    {
+      "id": 4,
+      "category": "Core",
+      "question": "What is package.json?",
+      "answer": "package.json is a file that contains metadata about a Node.js project and its dependencies. It includes project name, version, scripts, and list of packages required by the project."
+    },
+    {
+      "id": 5,
+      "category": "Core",
+      "question": "What are Callbacks in Node.js?",
+      "answer": "Callbacks are functions that are passed as arguments to other functions and are executed after the main function has finished its execution. They're commonly used to handle asynchronous operations."
+    }
+  ]
+}
