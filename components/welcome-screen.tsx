@@ -33,7 +33,16 @@ export function WelcomeScreen({ githubUser, action }: WelcomeScreenProps) {
 
   function handleSubmit(event: React.FormEvent): void {
     event.preventDefault()
-    action({...formData})
+    const collegeName = formData.collegeName;
+    const graduationYear = formData.graduationYear;
+    const department = formData.department;
+    const selected_skill = formData.selected_skill;
+    const newformData = new FormData();
+    newformData.append('collegeName', collegeName);
+    newformData.append('graduationYear', graduationYear);
+    newformData.append('department', department);
+    newformData.append('selected_skill', selected_skill);
+    action(newformData)
   }
 
   return (
