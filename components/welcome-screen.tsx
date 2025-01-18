@@ -25,13 +25,14 @@ export function WelcomeScreen({ githubUser, action }: WelcomeScreenProps) {
     department: '',
     selected_skill: '',
   })
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false)
 
   const yearsSince = new Date().getFullYear() - new Date(githubUser.created_at).getFullYear()
 
 
 
-  function handleSubmit(event: React.FormEvent): void {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     const collegeName = formData.collegeName;
     const graduationYear = formData.graduationYear;
@@ -42,7 +43,16 @@ export function WelcomeScreen({ githubUser, action }: WelcomeScreenProps) {
     newformData.append('graduationYear', graduationYear);
     newformData.append('department', department);
     newformData.append('selected_skill', selected_skill);
-    action(newformData)
+    setLoading(true);
+    try {
+      // Perform your task here
+      await action(newformData);
+      // Navigate to the next screen
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -202,9 +212,9 @@ export function WelcomeScreen({ githubUser, action }: WelcomeScreenProps) {
                 </Select>
               </div>
             </div>
-            <Button type="submit" className="w-full">
-              Explore
-            </Button>
+            <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? 'Loading...' : 'Explore'}
+        </Button>
           </form>
         </CardContent>
       </Card>
