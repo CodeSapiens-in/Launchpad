@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import LearningPlan from '@/components/learning-plan';
 
 export default async function LearnPage() {
   const supabase = await createClient();
@@ -30,14 +31,8 @@ export default async function LearnPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-8">Learn {profile.selected_skill}</h1>
-      <div className="w-full max-w-2xl space-y-6">
-        <p className="text-lg">
-          Welcome to your personalized learning journey for {profile.selected_skill}!
-        </p>
-        {/* Add your learning content here */}
-      </div>
+    <div className="flex items-center justify-center min-h-screen">
+    <LearningPlan />
     </div>
   );
 }
