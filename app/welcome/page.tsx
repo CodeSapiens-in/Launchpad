@@ -38,10 +38,10 @@ export default async function WelcomePage() {
     .from("user_profiles")
     .upsert({  
       user_id: user?.id,
-      college_name: formData['collegeName'],
-      graduation_year: formData['graduationYear'],
-      department: formData['department'],
-      selected_skill: formData['selected_skill'],
+      college_name: formData.get('collegeName')?.toString() || '',
+      graduation_year: formData.get('graduationYear')?.toString() || '',
+      department: formData.get('department')?.toString() || '',
+      selected_skill: formData.get('selected_skill')?.toString() || '',
       })
       .eq('user_id', user?.id); // Assuming you have a user ID to match
 
