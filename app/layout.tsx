@@ -1,9 +1,8 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import Link from "next/link";
+import Navbar from "@/components/Navbar";
 import { getServerSession } from "@/lib/auth";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -20,41 +19,22 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-   // Fetch session details server-side
-   const session = await getServerSession(); 
+  const session = await getServerSession();
   return (
     <html lang="en" className={GeistSans.className}>
-    <body className="bg-background text-foreground">
+      <body className="bg-background text-foreground">
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-           {session && (
-            <nav className="bg-primary text-white py-4">
-              <div className="container mx-auto flex justify-between items-center">
-                <div className="text-lg font-bold">CodeSapiens</div>
-                <ul className="flex space-x-4">
-                  <li>
-                    <Link href="/dashboard">Dashboard</Link>
-                  </li>
-                  <li>
-                    <Link href="/profile">Profile</Link>
-                  </li>
-                  <li>
-                    <Link href="/logout">Logout</Link>
-                  </li>
-                </ul>
-              </div>
-            </nav>
-          )}
-            <main className="min-h-screen flex flex-col">
-                {children}
-            </main>
+          {session && <Navbar />}
+          <main className="container mx-auto flex flex-col items-center justify-center min-h-screen">
+            {children}
+          </main>
         </ThemeProvider>
-    </body>
-</html>
-);
+      </body>
+    </html>
+  );
 }
