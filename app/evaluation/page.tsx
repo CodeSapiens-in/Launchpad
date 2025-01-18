@@ -25,7 +25,7 @@ export default async function EvaluationPage() {
     .single();
 
   if (!profile?.selected_skill) {
-    return redirect("/skill-selection");
+    return redirect("/welcome");
   }
 
   // Read questions from JSON file

@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { NextResponse } from "next/server";
 
 const skills = [
   "Python",
@@ -28,6 +29,7 @@ export default async function SkillSelectionPage() {
     const supabase = await createClient();
     const selectedSkill = formData.get("skill") as string;
     
+ 
     const { error } = await supabase
       .from("user_profiles")
       .upsert({ 

@@ -21,11 +21,11 @@ export default async function LearnPage() {
     .single();
 
   if (!profile?.selected_skill) {
-    return redirect("/skill-selection");
+    return redirect("/welcome");
   }
 
   if (profile.stage === -2) {
-    return redirect("/skill-selection");
+    return redirect("/welcome");
   } else if (profile.stage === -1) {
     return redirect("/evaluation");
   }

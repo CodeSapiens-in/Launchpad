@@ -11,7 +11,8 @@ export const signInWithGithubAction = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'github',
     options: {
-      redirectTo: `${origin}/auth/callback`
+      redirectTo: `${origin}/auth/callback`,
+      scopes: 'repo:status,read:user',
     }
   });
 
@@ -30,3 +31,21 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/");
 };
+
+import { GitHubUser } from '../types/github'
+
+export async function getGitHubProfile(username: string): Promise<GitHubUser> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getSession();
+  const response = await fetch(`https://api.github.com/users/${username}`, {
+    headers: {
+      Authorization: `Bearer ${data.session?.provider_token}`,
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch GitHub profile')
+  }
+
+  return response.json()
+}

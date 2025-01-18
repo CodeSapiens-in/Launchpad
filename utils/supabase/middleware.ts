@@ -49,8 +49,9 @@ export async function updateSession(request: NextRequest) {
     // Handle stage-based routing
     if (request.nextUrl.pathname === "/") {
       if (stage === -2) {
-        return NextResponse.redirect(new URL("/skill-selection", request.url));
-      } else if (stage === -1) {
+        return NextResponse.redirect(new URL("/welcome", request.url));
+      }
+      else if (stage === -1) {
         return NextResponse.redirect(new URL("/evaluation", request.url));
       } else {
         return NextResponse.redirect(new URL("/learn", request.url));
