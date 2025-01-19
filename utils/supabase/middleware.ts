@@ -13,26 +13,22 @@ export async function updateSession(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
+        getAll() {
+          return request.cookies.getAll()
         },
-        set(name: string, value: string, options: CookieOptions) {
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-        },
-        remove(name: string, options: CookieOptions) {
-          response.cookies.set({
-            name,
-            value: "",
-            ...options,
-          });
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          response = NextResponse.next({
+            request,
+          })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          )
         },
       },
     }
-  );
+  )
+
 
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -60,7 +56,7 @@ export async function updateSession(request: NextRequest) {
   } else if (request.nextUrl.pathname !== "/" && 
              request.nextUrl.pathname !== "/sign-in" && 
              !request.nextUrl.pathname.startsWith("/auth")) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return response;

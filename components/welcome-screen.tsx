@@ -45,9 +45,7 @@ export function WelcomeScreen({ githubUser, action }: WelcomeScreenProps) {
     newformData.append('selected_skill', selected_skill);
     setLoading(true);
     try {
-      // Perform your task here
       await action(newformData);
-      // Navigate to the next screen
     } catch (error) {
       console.error(error);
     } finally {
@@ -57,7 +55,7 @@ export function WelcomeScreen({ githubUser, action }: WelcomeScreenProps) {
 
   return (
     <div className="container max-w-4xl mx-auto py-8 px-4">
-      <Card className="bg-gradient-to-br from-primary/10 to-background">
+      <Card>
         <CardHeader className="space-y-4">
           <div className="flex items-center gap-4">
             <img

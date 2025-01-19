@@ -5,6 +5,7 @@ import { EvaluationForm } from "@/components/EvaluationForm";
 
 import fs from 'fs';
 import path from 'path';
+import { Card } from "@/components/ui/card";
 
 export default async function EvaluationPage() {
   const supabase = await createClient();
@@ -68,7 +69,8 @@ export default async function EvaluationPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="w-full max-w-2xl">
+      <Card>
+      <div className="w-full max-w-2xl gap-4 p-8">
         <h1 className="text-2xl font-bold text-center mb-2">
           {profile.selected_skill} Questions
         </h1>
@@ -82,6 +84,7 @@ export default async function EvaluationPage() {
         />
       
       </div>
+      </Card>
     </div>
   );
 }
