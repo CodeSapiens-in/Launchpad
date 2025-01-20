@@ -117,9 +117,9 @@ export function WelcomeScreen({ githubUser, action }: WelcomeScreenProps) {
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-full p-0">
-                    <Command>
-                      <CommandInput placeholder="Search college..." />
+                  <PopoverContent className="w-full p-0 bg-white">
+                    <Command className="bg-white">
+                      <CommandInput placeholder="Search college..." className="bg-white" />
                       <CommandEmpty>No college found.</CommandEmpty>
                       <CommandGroup className="max-h-64 overflow-auto">
                         {colleges && colleges.map((college) => (
@@ -130,6 +130,7 @@ export function WelcomeScreen({ githubUser, action }: WelcomeScreenProps) {
                               setFormData({ ...formData, collegeName: currentValue })
                               setOpen(false)
                             }}
+                            className="cursor-pointer hover:bg-accent"
                           >
                             <Check
                               className={cn(
