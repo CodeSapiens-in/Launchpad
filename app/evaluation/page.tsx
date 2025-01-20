@@ -1,8 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { EvaluationForm } from "@/components/EvaluationForm";
-
-
 import fs from 'fs';
 import path from 'path';
 import { Card } from "@/components/ui/card";
@@ -46,44 +44,38 @@ export default async function EvaluationPage() {
       return redirect("/sign-in");
     }
 
-    console.log('Received form data:', formData);
-    const knew = parseInt(formData.get('knew') as string);
-    const learnt = parseInt(formData.get('learnt') as string);
-    const skipped = parseInt(formData.get('skipped') as string);
-    
-    const { error } = await supabase
+    // Update user stage to indicate evaluation is complete
+    await supabase
       .from("user_profiles")
-      .update({ 
-        stage: 0,  // Move to learn stage
-        evaluation_results: { knew, learnt, skipped }
-      })
+      .update({ stage: 0 })
       .eq("user_id", user.id);
 
-    if (error) {
-      console.error("Error updating stage:", error);
-      return;
-    }
+    // Store evaluation results
+    await supabase.from("evaluation_results").insert({
+      user_id: user.id,
+      knew: parseInt(formData.get('knew') as string),
+      learnt: parseInt(formData.get('learnt') as string),
+      skipped: parseInt(formData.get('skipped') as string),
+      skill: profile?.selected_skill
+    });
 
-    redirect("/learn");
+    return redirect("/evaluation/complete");
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <Card>
-      <div className="w-full max-w-2xl gap-4 p-8">
-        <h1 className="text-2xl font-bold text-center mb-2">
-          {profile.selected_skill} Questions
-        </h1>
-        <p className="text-center text-gray-600 mb-8">
-          Test, rate and improve your {profile.selected_skill} knowledge with these questions.
-        </p>
+    <div className="flex items-center justify-center min-h-screen">
+      <Card className="w-full max-w-2xl p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-center">Skill Assessment</h1>
+          <p className="text-center text-muted-foreground mt-2">
+            Let's understand your current knowledge level in {profile.selected_skill}
+          </p>
+        </div>
         
-        <EvaluationForm 
+        <EvaluationForm
           questions={questionsData.questions}
           action={completeEvaluation}
         />
-      
-      </div>
       </Card>
     </div>
   );

@@ -1,48 +1,28 @@
 import { Button } from "@/components/ui/button"
-import { useState, useEffect } from 'react'
+import { CheckCircle } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface CheckInButtonProps {
-  streak: number
-  onCheckIn: () => void
+  onClick: () => void;
+  className?: string;
 }
 
-export default function CheckInButton({ streak, onCheckIn }: CheckInButtonProps) {
-  const [lastCheckIn, setLastCheckIn] = useState<Date | null>(null)
-  const [canCheckIn, setCanCheckIn] = useState(true)
-
-  useEffect(() => {
-    const storedLastCheckIn = localStorage.getItem('lastCheckIn')
-    if (storedLastCheckIn) {
-      setLastCheckIn(new Date(storedLastCheckIn))
-    }
-  }, [])
-
-  useEffect(() => {
-    if (lastCheckIn) {
-      const now = new Date()
-      const timeSinceLastCheckIn = now.getTime() - lastCheckIn.getTime()
-      const hoursSinceLastCheckIn = timeSinceLastCheckIn / (1000 * 60 * 60)
-      setCanCheckIn(hoursSinceLastCheckIn >= 24)
-    }
-  }, [lastCheckIn])
-
-  const handleCheckIn = () => {
-    if (canCheckIn) {
-      const now = new Date()
-      setLastCheckIn(now)
-      localStorage.setItem('lastCheckIn', now.toISOString())
-      setCanCheckIn(false)
-      onCheckIn()
-    }
-  }
-
+export default function CheckInButton({ onClick, className }: CheckInButtonProps) {
   return (
-    <div className="flex items-center space-x-2">
-      <Button onClick={handleCheckIn} disabled={!canCheckIn}>
-        Check In
-      </Button>
-      <span className="text-sm font-medium">Streak: {streak} days</span>
-    </div>
-  )
+    <Button
+      onClick={onClick}
+      size="lg"
+      className={cn(
+        "relative group bg-gradient-to-r from-primary to-primary/70 hover:from-primary/90 hover:to-primary/60",
+        "transition-all duration-300 ease-out",
+        className
+      )}
+    >
+      <CheckCircle className="w-5 h-5 mr-2 transition-transform group-hover:scale-110" />
+      <span className="font-medium">Check In</span>
+      
+      <span className="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary/20 to-primary/10 blur opacity-0 group-hover:opacity-100 transition-opacity" />
+    </Button>
+  );
 }
 

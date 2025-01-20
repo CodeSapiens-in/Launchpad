@@ -1,8 +1,15 @@
-import { GeistSans } from "geist/font/sans";
+import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import { getServerSession } from "@/lib/auth";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const montserrat = Montserrat({ 
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+});
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -11,7 +18,7 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "CodeSapiens",
-  description: "The intelligent coding assistant",
+  description: "Launchpad for Students",
 };
 
 export default async function RootLayout({
@@ -21,8 +28,8 @@ export default async function RootLayout({
 }>) {
   const session = await getServerSession();
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="bg-background text-foreground">
+    <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
+      <body className="bg-background text-foreground font-sans antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -30,7 +37,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           {session && <Navbar />}
-          <main className="container mx-auto flex flex-col items-center justify-center min-h-screen">
+          <main className="container mx-auto px-4 flex flex-col items-center justify-center min-h-screen">
             {children}
           </main>
         </ThemeProvider>

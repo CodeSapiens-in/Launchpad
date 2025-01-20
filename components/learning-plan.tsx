@@ -56,62 +56,67 @@ const learningPlanData = [
 ]
 
 export default function LearningPlan() {
-  const [currentWeek, setCurrentWeek] = useState(0)
-  const [streak, setStreak] = useState(0)
-  const [completedTasks, setCompletedTasks] = useState<{[key: number]: number}>({0: 0, 1: 0, 2: 0, 3: 0})
-  const [selectedTask, setSelectedTask] = useState<{ name: string, link: string } | null>(null)
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+  const [selectedWeek, setSelectedWeek] = useState(0);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<{ name: string; link: string } | null>(null);
 
   const handleCheckIn = () => {
-    setStreak(prev => prev + 1)
-  }
+    // Implementation
+  };
 
   const handleTaskCompletion = (week: number, completed: number) => {
-    setCompletedTasks(prev => ({...prev, [week]: completed}))
-  }
+    // Implementation
+  };
 
-  const handleTaskClick = (task: { name: string, link: string }) => {
-    setSelectedTask(task)
-    setIsBottomSheetOpen(true)
-  }
-
-  const totalTasks = learningPlanData.reduce((acc, week) => acc + week.tasks.length, 0)
-  const completedTasksCount = Object.values(completedTasks).reduce((acc, count) => acc + count, 0)
-  const overallProgress = (completedTasksCount / totalTasks) * 100
+  const handleTaskClick = (task: { name: string; link: string }) => {
+    setSelectedTask(task);
+    setShowBottomSheet(true);
+  };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardHeader>
-        <CardTitle>4-Week Web Development Learning Plan</CardTitle>
-        <CardDescription>Track your progress and maintain your learning streak</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <p className="text-sm font-medium">Overall Progress</p>
-            <Progress value={overallProgress} className="w-[60%]" />
-          </div>
-          <CheckInButton streak={streak} onCheckIn={handleCheckIn} />
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          {learningPlanData.map((week) => (
-            <WeekCard
-              key={week.week}
-              weekData={week}
-              isActive={currentWeek === week.week}
-              completedTasks={completedTasks[week.week]}
-              onTaskCompletion={(completed) => handleTaskCompletion(week.week, completed)}
-              onTaskClick={handleTaskClick}
-            />
-          ))}
-        </div>
-      </CardContent>
+    <div className="w-full max-w-4xl px-4 py-8 space-y-8 animate-in">
+      <div className="space-y-2">
+        <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+          Your Learning Journey
+        </h1>
+        <p className="text-center text-muted-foreground">
+          Track your progress and stay on course
+        </p>
+      </div>
+
+      <Card className="card">
+        <CardHeader>
+          <CardTitle>Overall Progress</CardTitle>
+          <CardDescription>Week {selectedWeek + 1} of 12</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Progress value={((selectedWeek + 1) / 12) * 100} className="h-2" />
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {learningPlanData.map((week, index) => (
+          <WeekCard
+            key={week.week}
+            week={week}
+            isActive={selectedWeek === index}
+            onTaskClick={handleTaskClick}
+            onTaskComplete={(completed) => handleTaskCompletion(index, completed)}
+            className="card transform transition-all duration-200 hover:scale-105"
+          />
+        ))}
+      </div>
+
+      <div className="fixed bottom-8 right-8">
+        <CheckInButton onClick={handleCheckIn} className="shadow-lg hover:shadow-xl transition-shadow" />
+      </div>
+
       <BottomSheet
-        isOpen={isBottomSheetOpen}
-        onClose={() => setIsBottomSheetOpen(false)}
+        isOpen={showBottomSheet}
+        onClose={() => setShowBottomSheet(false)}
         task={selectedTask}
       />
-    </Card>
-  )
+    </div>
+  );
 }
 

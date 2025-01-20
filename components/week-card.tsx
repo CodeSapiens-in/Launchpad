@@ -1,62 +1,65 @@
-import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Badge } from "@/components/ui/badge"
+import { CheckCircle2, Circle } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface WeekCardProps {
-  weekData: {
-    week: number
-    goal: string
-    roadmap: string
-    tasks: { name: string; link: string }[]
-  }
-  isActive: boolean
-  completedTasks: number
-  onTaskCompletion: (completed: number) => void
-  onTaskClick: (task: { name: string; link: string }) => void
+  week: {
+    week: number;
+    goal: string;
+    roadmap: string;
+    tasks: Array<{ name: string; link: string }>;
+  };
+  isActive: boolean;
+  onTaskClick: (task: { name: string; link: string }) => void;
+  onTaskComplete: (completed: number) => void;
+  className?: string;
 }
 
-export default function WeekCard({ weekData, isActive, completedTasks, onTaskCompletion, onTaskClick }: WeekCardProps) {
-  const [tasks, setTasks] = useState(weekData.tasks.map(() => false))
-
-  const handleTaskToggle = (index: number) => {
-    const newTasks = [...tasks]
-    newTasks[index] = !newTasks[index]
-    setTasks(newTasks)
-    onTaskCompletion(newTasks.filter(Boolean).length)
-  }
-
+export default function WeekCard({
+  week,
+  isActive,
+  onTaskClick,
+  onTaskComplete,
+  className
+}: WeekCardProps) {
   return (
-    <Card className={`${isActive ? 'border-primary' : ''}`}>
+    <Card className={cn(
+      "relative overflow-hidden transition-all duration-300",
+      isActive ? "border-primary shadow-lg" : "hover:border-primary/50",
+      className
+    )}>
+      {isActive && (
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary/70" />
+      )}
       <CardHeader>
-        <CardTitle>Week {weekData.week}</CardTitle>
-        <CardDescription>{weekData.goal}</CardDescription>
+        <div className="flex items-center justify-between">
+          <Badge variant={isActive ? "default" : "secondary"} className="mb-2">
+            Week {week.week + 1}
+          </Badge>
+        </div>
+        <CardTitle className="text-xl">{week.goal}</CardTitle>
+        <CardDescription className="line-clamp-2">{week.roadmap}</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm mb-2">{weekData.roadmap}</p>
-        <ul className="space-y-2">
-          {weekData.tasks.map((task, index) => (
-            <li key={index} className="flex items-center space-x-2">
-              <Checkbox
-                id={`task-${weekData.week}-${index}`}
-                checked={tasks[index]}
-                onCheckedChange={() => handleTaskToggle(index)}
-              />
-              <label
-                htmlFor={`task-${weekData.week}-${index}`}
-                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex-grow"
-              >
-                <button
-                  onClick={() => onTaskClick(task)}
-                  className="text-left hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded"
-                >
-                  {task.name}
-                </button>
-              </label>
+        <ul className="space-y-3">
+          {week.tasks.map((task, index) => (
+            <li
+              key={index}
+              onClick={() => onTaskClick(task)}
+              className="flex items-start space-x-3 p-2 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
+            >
+              <div className="flex-shrink-0 mt-0.5">
+                <Circle className="w-5 h-5 text-muted-foreground" />
+              </div>
+              <span className="text-sm flex-1 text-muted-foreground hover:text-foreground transition-colors">
+                {task.name}
+              </span>
             </li>
           ))}
         </ul>
       </CardContent>
     </Card>
-  )
+  );
 }
 

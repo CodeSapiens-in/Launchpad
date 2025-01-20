@@ -1,46 +1,44 @@
-import { useState, useEffect } from 'react'
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { ExternalLink, X } from "lucide-react"
 
 interface BottomSheetProps {
-  isOpen: boolean
-  onClose: () => void
-  task: { name: string; link: string } | null
+  isOpen: boolean;
+  onClose: () => void;
+  task: { name: string; link: string } | null;
 }
 
 export default function BottomSheet({ isOpen, onClose, task }: BottomSheetProps) {
-  const [isSheetOpen, setIsSheetOpen] = useState(isOpen)
-
-  useEffect(() => {
-    setIsSheetOpen(isOpen)
-  }, [isOpen])
-
-  const handleOpenChange = (open: boolean) => {
-    setIsSheetOpen(open)
-    if (!open) onClose()
-  }
+  if (!task) return null;
 
   return (
-    <Sheet open={isSheetOpen} onOpenChange={handleOpenChange}>
-      <SheetContent side="bottom" className="h-[50vh] sm:h-[40vh]">
-        <SheetHeader>
-          <SheetTitle>{task?.name}</SheetTitle>
-          <SheetDescription>
-            Learn more about this topic and access helpful resources.
-          </SheetDescription>
-        </SheetHeader>
-        <div className="mt-4">
-          <p className="text-sm mb-4">
-            This task is an important part of your learning journey. Click the button below to access a helpful resource for this topic.
-          </p>
-          <Button asChild>
-            <a href={task?.link} target="_blank" rel="noopener noreferrer">
-              Open Resource
-            </a>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px] animate-in">
+        <DialogHeader>
+          <div className="flex items-start justify-between">
+            <DialogTitle className="text-xl font-semibold pr-8">{task.name}</DialogTitle>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full hover:bg-muted"
+              onClick={onClose}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </DialogHeader>
+        
+        <div className="mt-6">
+          <Button
+            className="w-full bg-gradient-to-r from-primary to-primary/70 hover:from-primary/90 hover:to-primary/60"
+            onClick={() => window.open(task.link, "_blank")}
+          >
+            <ExternalLink className="mr-2 h-4 w-4" />
+            Open Resource
           </Button>
         </div>
-      </SheetContent>
-    </Sheet>
-  )
+      </DialogContent>
+    </Dialog>
+  );
 }
 
