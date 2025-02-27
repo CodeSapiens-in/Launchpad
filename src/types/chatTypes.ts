@@ -9,6 +9,8 @@ export interface Message {
   type: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+  showLearnMore?: boolean;
+  followUpButtons?: string[];
 }
 
 export interface ChatContext {

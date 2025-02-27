@@ -3,6 +3,43 @@ import { NextResponse } from 'next/server';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
+
+ function cleanJsonResponse(text: string) {
+  try {
+    // Extract JSON content (removes surrounding non-JSON text)
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) {
+      return {
+        answer: "I apologize, but I couldn't generate a properly formatted response. Please try asking your question again.",
+        questions: []
+      };
+    }
+
+    let rawJson = match[0];
+
+    // Fix newlines: Remove unnecessary line breaks but keep markdown formatting
+    rawJson = rawJson.replace(/\n\s+/g, ' '); // Replace newlines + spaces with a single space
+    rawJson = rawJson.replace(/(?<!\\)"\s*\n\s*/g, '" '); // Fix newlines inside string values
+    
+    console.log(rawJson);
+    // Parse the cleaned JSON and ensure it has the correct structure
+    const parsedJson = JSON.parse(rawJson);
+    console.log(parsedJson);
+    
+    // Ensure the response has the required structure
+    return {
+      answer: typeof parsedJson.answer === 'string' ? parsedJson.answer : "I apologize, but I couldn't generate a properly formatted response.",
+      questions: Array.isArray(parsedJson.questions) ? parsedJson.questions.filter((q: string) => typeof q === 'string') : []
+    };
+  } catch (error) {
+    console.error("Error cleaning JSON:", error);
+    return {
+      answer: "I apologize, but I couldn't generate a properly formatted response. Please try asking your question again.",
+      questions: []
+    };
+  }
+}
+
 export async function POST(request: Request) {
   try {
     // Ensure API key is configured
@@ -37,11 +74,20 @@ export async function POST(request: Request) {
         'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'mixtral-8x7b-32768',
+        model: 'llama-3.3-70b-versatile',
         messages: [
           {
             role: 'system',
-            content: `${characterPrompt || 'You are a helpful AI tutor assisting students with their questions.'} Format your responses using markdown for better readability:\n\n- Use **bold** for emphasis\n- Use bullet points for lists\n- Use numbered lists for steps\n- Use code blocks with proper language tags for code examples\n- Use headings for sections\n- Use > for important notes or quotes\n\nEnsure your responses are well-structured and easy to read.`
+            content: `${characterPrompt || 'You are a helpful AI tutor assisting students with their questions.'} Please provide your response in markdown format with:
+- **bold** for emphasis
+- bullet points for lists
+- new line \n for paragraphs or new lines
+- numbered lists for steps
+- code blocks with proper language tags
+- headings for sections
+- > for important notes or quotes
+
+Keep your response clear, concise, and well-structured.`
           },
           {
             role: 'user',
@@ -53,6 +99,7 @@ export async function POST(request: Request) {
       }),
     });
 
+
     if (!response.ok) {
       const error = await response.json();
       console.error('GROQ API error:', error);
@@ -60,9 +107,9 @@ export async function POST(request: Request) {
     }
 
     const data = await response.json();
-    const aiResponse = data.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
-
-    return NextResponse.json({ response: aiResponse });
+    const text = data.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
+    
+    return NextResponse.json({ text });
 
   } catch (error) {
     console.error('Chat API error:', error);
