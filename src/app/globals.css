@@ -3,19 +3,108 @@
 @tailwind utilities;
 
 :root {
+  /* Base colors */
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* UI Colors */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  
+  /* Component specific */
+  --header-bg: var(--background);
+  --header-border: var(--gray-200);
+  --card-bg: var(--background);
+  --card-border: var(--gray-200);
+  --button-primary: var(--primary);
+  --button-primary-hover: var(--primary-hover);
+  
+  /* Text colors */
+  --text-primary: var(--gray-800);
+  --text-secondary: var(--gray-600);
+  
+  /* Transitions */
+  --transition-all: all 0.2s ease-in-out;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    
+    /* UI Colors Dark Mode */
+    --gray-50: #18181b;
+    --gray-100: #27272a;
+    --gray-200: #3f3f46;
+    --gray-300: #52525b;
+    --gray-600: #a1a1aa;
+    --gray-700: #d4d4d8;
+    --gray-800: #e4e4e7;
+    --gray-900: #fafafa;
+    
+    /* Component specific dark mode */
+    --header-border: var(--gray-700);
+    --card-border: var(--gray-700);
+    
+    /* Text colors dark mode */
+    --text-primary: var(--gray-100);
+    --text-secondary: var(--gray-300);
   }
 }
 
+/* Base styles */
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Common component styles */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  transition: var(--transition-all);
+}
+
+.button-primary {
+  background: var(--button-primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: var(--transition-all);
+}
+
+.button-primary:hover {
+  background: var(--button-primary-hover);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.shadow-hover {
+  transition: var(--transition-all);
+}
+
+.shadow-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }

@@ -117,8 +117,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   return (
     <>
-      <div className={`fixed inset-x-0 bottom-0 transform ${isChatOpen ? 'translate-y-0' : 'translate-y-full'} transition-transform duration-300 ease-in-out z-40`}>
-        <div className="bg-white/95 dark:bg-gray-800/95 shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.3)] dark:shadow-[0_-8px_30px_-12px_rgba(255,255,255,0.1)] ring-2 ring-blue-500/50 dark:ring-blue-400/30 rounded-t-xl mx-4 h-[80vh] min-h-[400px] max-h-[800px] flex flex-col border-2 border-blue-200 dark:border-blue-800 backdrop-blur-lg">
+      <div className={`fixed inset-x-0 bottom-0 transform ${isChatOpen ? 'translate-y-0' : 'translate-y-full'} transition-transform duration-300 ease-in-out z-50`}>
+        <div className="bg-white/95 dark:bg-gray-800/95 shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.3)] dark:shadow-[0_-8px_30px_-12px_rgba(255,255,255,0.1)] ring-2 ring-gray-900/20 dark:ring-white/20 rounded-t-xl mx-4 h-[80vh] min-h-[400px] max-h-[800px] flex flex-col border-2 border-gray-300 dark:border-gray-600 backdrop-blur-lg">
           <div className="p-4 border-b-2 border-blue-200 dark:border-blue-800 flex justify-between items-center bg-gradient-to-r from-white/90 to-gray-50/90 dark:from-gray-800/90 dark:to-gray-900/90 rounded-t-xl">
             <div className="flex items-center space-x-4">
               <select
@@ -135,7 +135,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200 z-50 relative"
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200"
               aria-label="Close chat"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 transform transition-transform duration-300 ${isChatOpen ? 'rotate-180' : 'rotate-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
