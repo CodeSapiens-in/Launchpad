@@ -83,7 +83,7 @@ export async function POST(request: Request) {
 - bullet points for lists
 - new line \n for paragraphs or new lines
 - numbered lists for steps
-- code blocks with proper language tags
+- code blocks only if necessary, with proper language tags
 - headings for sections
 - > for important notes or quotes
 

@@ -117,9 +117,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   return (
     <>
-      <div className={`fixed inset-x-0 bottom-0 transform ${isChatOpen ? 'translate-y-0' : 'translate-y-full'} transition-transform duration-300 ease-in-out z-30`}>
-        <div className="bg-white dark:bg-gray-800 shadow-xl rounded-t-xl mx-4 h-[80vh] min-h-[400px] max-h-[800px] flex flex-col border border-gray-200 dark:border-gray-700">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
+      <div className={`fixed inset-x-0 bottom-0 transform ${isChatOpen ? 'translate-y-0' : 'translate-y-full'} transition-transform duration-300 ease-in-out z-40`}>
+        <div className="bg-white/95 dark:bg-gray-800/95 shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.3)] dark:shadow-[0_-8px_30px_-12px_rgba(255,255,255,0.1)] ring-2 ring-blue-500/50 dark:ring-blue-400/30 rounded-t-xl mx-4 h-[80vh] min-h-[400px] max-h-[800px] flex flex-col border-2 border-blue-200 dark:border-blue-800 backdrop-blur-lg">
+          <div className="p-4 border-b-2 border-blue-200 dark:border-blue-800 flex justify-between items-center bg-gradient-to-r from-white/90 to-gray-50/90 dark:from-gray-800/90 dark:to-gray-900/90 rounded-t-xl">
             <div className="flex items-center space-x-4">
               <select
                 value={selectedCharacter.id}
@@ -135,10 +135,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200"
+              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200 z-50 relative"
               aria-label="Close chat"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 transform transition-transform duration-300 ${isChatOpen ? 'rotate-180' : 'rotate-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>

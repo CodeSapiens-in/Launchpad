@@ -40,7 +40,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ weeks, onTopicClick, isSidebarOpen 
                   key={topic.id}
                   onClick={() => onTopicClick(topic)}
                   onKeyDown={(e) => handleKeyPress(e, topic)}
-                  className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded cursor-pointer transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 mx-1 px-2 py-2 rounded-md cursor-pointer transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-gray-800"
                   role="button"
                   tabIndex={0}
                   aria-label={`View topic: ${topic.title}`}
