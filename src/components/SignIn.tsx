@@ -65,11 +65,10 @@ export default function SignIn() {
       <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 mt-8">
         <div className="max-w-4xl text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-            Learn AI Engineering from AI
+            Learn AI with AI
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join our innovative platform where AI teaches you to become an AI Engineer. 
-            Master the skills needed to build the future of technology.
+            Choose your favorite character to learn AI whether its Iron Man or Malar teacher
           </p>
 
           {/* Sign In Button */}  {/* Sign In Section */}
@@ -102,16 +101,16 @@ export default function SignIn() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
             {[
               {
-                title: 'Interactive Learning',
-                description: 'Learn through real-time conversations with our AI tutor'
+                title: 'Character-Based Learning',
+                description: 'Pick your favorite character as your AI mentor for a unique learning experience'
               },
               {
-                title: 'Practical Projects',
-                description: 'Build real AI applications with guided assistance'
+                title: 'Interactive Conversations',
+                description: 'Learn through natural dialogues with AI characters who match your style'
               },
               {
-                title: 'Expert Guidance',
-                description: 'Get mentored by an AI that understands your learning pace'
+                title: 'Personalized Journey',
+                description: 'Get explanations that resonate with you, from characters you love'
               }
             ].map((feature, index) => (
               <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
