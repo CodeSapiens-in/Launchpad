@@ -1,5 +1,7 @@
 'use client';
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 export default function Home() {
   return (
     <div className="p-8">
@@ -10,19 +12,27 @@ export default function Home() {
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Getting Started</h2>
-            <p className="text-gray-600 dark:text-gray-300">
-              Begin your AI journey with our structured learning paths. Select a topic from the sidebar to start learning.
-            </p>
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Getting Started</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300">
+                Begin your AI journey with our structured learning paths. Select a topic from the sidebar to start learning.
+              </p>
+            </CardContent>
+          </Card>
           
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Interactive Learning</h2>
-            <p className="text-gray-600 dark:text-gray-300">
-              Use our AI-powered chat assistant to get instant help and clarification on any topic.
-            </p>
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Interactive Learning</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300">
+                Use our AI-powered chat assistant to get instant help and clarification on any topic.
+              </p>
+            </CardContent>
+          </Card>
         </div>
         
         <div className="mt-12">
@@ -42,10 +52,14 @@ export default function Home() {
                 description: 'Explore the architecture and applications of Neural Networks.'
               }
             ].map((topic, index) => (
-              <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">{topic.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{topic.description}</p>
-              </div>
+              <Card key={index}>
+                <CardHeader>
+                  <CardTitle className="text-lg">{topic.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 dark:text-gray-300">{topic.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
